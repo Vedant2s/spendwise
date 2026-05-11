@@ -9,3 +9,7 @@ The diagram below represents the main user interactions in SpendWise, including 
 ![Usecase Diagram](./images/usecase-diagram.png)
 
 ### ER diagram
+ER diagram representing the data model and relationships within the SpendWise expense management system.
+
+![Entity Relationship Diagram](./images/er-diagram.png)
+
