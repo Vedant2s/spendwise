@@ -14,7 +14,7 @@ public class Transaction {
     private BigDecimal amount; // Use BigDecimal for accurate financial calculations
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
     @ManyToOne
@@ -23,7 +23,7 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "category_id",nullable = true)
-    private Categories category;
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name = "sub_category_id",nullable = true)

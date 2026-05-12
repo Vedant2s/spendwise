@@ -26,7 +26,7 @@ public class BankAccount {
     // ✅ Defines relationship: Many BankAccounts → ONE User
     // → Multiple accounts can belong to a single user
 
-    @JoinColumn(name = "user_id",nullable = true)
+    @JoinColumn(name = "user_id",nullable = false)
     // ✅ Specifies the Foreign Key column in this table
     // → "user_id" will be created in DB as a FK referencing User table
     // → links BankAccount to its owning User
@@ -34,5 +34,8 @@ public class BankAccount {
     private User user;
     // ✅ Entity reference (not a raw ID)
     // → JPA uses this to manage relationship mapping internally
+
+    @OneToMany(mappedBy = "account")
+    private List<Transaction> transactions;
 
 }

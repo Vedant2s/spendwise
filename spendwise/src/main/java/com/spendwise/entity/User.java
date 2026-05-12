@@ -1,5 +1,6 @@
 import jakarta.persistence.*;  // ✅ Required for JPA annotations
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity  // ✅ Marks this class as a JPA entity → mapped to a database table
 public class User {
@@ -14,14 +15,14 @@ public class User {
     // → Best for simple applications like SpendWise
 
     private Long userID;
-
+    @Column(nullable = false)
     private String username;
     // ✅ Normal column (automatically mapped)
     // → No annotation needed for simple fields
-
+    @Column(nullable = false, unique = true)
     private String email;
     // ✅ Should ideally be UNIQUE (add @Column(unique = true) later)
-
+    @Column(nullable = false)
     private String passwordHash;
     // ✅ Stores hashed password (NOT plain password)
     // → Used for secure authentication
@@ -34,4 +35,28 @@ public class User {
     // ✅ Ensures accurate storage for financial data
 
     private BigDecimal monthlyIncome;
+
+    // ✅ 1. User → Categories
+    @OneToMany(mappedBy = "user")
+    private List<Category> categories;
+
+    // ✅ 2. User → Bank Accounts
+    @OneToMany(mappedBy = "user")
+    private List<BankAccount> bankAccounts;
+
+    // ✅ 3. User → Category Budgets
+    @OneToMany(mappedBy = "user")
+    private List<CategoryBudget> categoryBudgets;
+
+    // ✅ 4. User → Transactions
+    @OneToMany(mappedBy = "user")
+    private List<Transaction> transactions;
+
+    // ✅ 5. User → Premium Subscription
+    @OneToOne(mappedBy = "user")
+    private Subscription subscription;
+
+    @OneToMany(mappedBy = "user")
+    private List<SubCategoryBudget> subCategoryBudgets;
+
 }

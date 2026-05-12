@@ -1,6 +1,12 @@
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 import jakarta.persistence.*;
+
+public enum BillingCycle {
+    MONTHLY,
+    YEARLY
+}
 
 @Entity
 public class Subscription {
@@ -14,10 +20,10 @@ public class Subscription {
     private BigDecimal price;
 
     @OneToOne
-    @JoinColumn(name = "user_id",nullable = true)
+    @JoinColumn(name = "user_id",nullable = false,unique = true)
     private User user;
+    @Enumerated(EnumType.STRING)
+    private BillingCycle billingCycle; // e.g., MONTHLY, YEARLY
 
-    private String billingCycle; // e.g., "Monthly", "Yearly"
-
-    private String nextBillingDate; // Store as String for simplicity (e.g., "2024-07-01")
+    private LocalDate nextBillingDate; //Stored as LocalDate for proper date handling
 }

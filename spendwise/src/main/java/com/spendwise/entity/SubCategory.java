@@ -10,7 +10,12 @@ public class SubCategory {
     private String subCategoryName;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Categories category;
+    @JoinColumn(name = "category_id",nullable = false)
+    private Category category;
 
+    @OneToMany(mappedBy = "subCategory")
+    private List<SubCategoryBudget> subCategoryBudgets;
+
+    @OneToMany(mappedBy = "subCategory")
+    private List<Transaction> transactions;
 }

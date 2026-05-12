@@ -12,11 +12,11 @@ public class CategoryBudget {
     private BigDecimal maxAllotedBudget; // Use BigDecimal for accurate financial calculations
 
     @ManyToOne
-    @JoinColumn(name = "category_id",nullable = true)
-    private Categories category;
+    @JoinColumn(name = "category_id",nullable = false)
+    private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
 }
