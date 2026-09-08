@@ -1,8 +1,10 @@
+package com.spendwise.entity;
 import jakarta.persistence.*;  // ✅ Required for JPA annotations
 import java.math.BigDecimal;
 import java.util.List;
 
 @Entity  // ✅ Marks this class as a JPA entity → mapped to a database table
+@Table(name="users")
 public class User {
 
     @Id 

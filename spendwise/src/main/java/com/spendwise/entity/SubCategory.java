@@ -1,6 +1,11 @@
+package com.spendwise.entity;
+
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="sub_categories")
 public class SubCategory {
 
     @Id

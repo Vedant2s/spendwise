@@ -1,14 +1,17 @@
+package com.spendwise.entity;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import jakarta.persistence.*;
 
-public enum BillingCycle {
+enum BillingCycle {
     MONTHLY,
     YEARLY
 }
 
 @Entity
+@Table(name="subscriptions")
 public class Subscription {
 
     @Id

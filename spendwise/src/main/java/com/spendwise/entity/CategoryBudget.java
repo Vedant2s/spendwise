@@ -1,8 +1,11 @@
+package com.spendwise.entity;
+
 import java.math.BigDecimal;
 
 import jakarta.persistence.*;
 
 @Entity
+@Table(name="category_budgets")
 public class CategoryBudget {
 
     @Id

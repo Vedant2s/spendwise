@@ -1,8 +1,12 @@
+package com.spendwise.entity;
+
+import java.util.List;
+
 import jakarta.persistence.*;
 
 @Entity  
 // ✅ Marks this class as a JPA entity → it will be mapped to a database table
-
+@Table(name="bank_accounts")
 public class BankAccount {
 
     @Id
