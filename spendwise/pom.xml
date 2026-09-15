@@ -71,6 +71,10 @@
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-h2console</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -130,9 +134,9 @@
 				<configuration>
 					<java>
 						<!-- <googleJavaFormat/> -->
-						<removeUnusedImports/>
-						<trimTrailingWhitespace/>
-						<endWithNewline/>
+						<removeUnusedImports />
+						<trimTrailingWhitespace />
+						<endWithNewline />
 					</java>
 				</configuration>
 			</plugin>
