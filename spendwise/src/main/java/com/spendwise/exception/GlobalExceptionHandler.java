@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.spendwise.dto.ApiErrorResponse;
 import com.spendwise.exception.customException.InvalidPasswordException;
 import com.spendwise.exception.customException.UserNotFoundException;
+import com.spendwise.exception.customException.UserWithEmailAlreadyExists;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -32,5 +33,15 @@ public class GlobalExceptionHandler {
             LocalDateTime.now()
         );
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ApiErrorResponse> handleAlreadyExistingEmailRegister(UserWithEmailAlreadyExists exception){
+        ApiErrorResponse response=new ApiErrorResponse(
+            HttpStatus.CONFLICT.value(),
+            HttpStatus.CONFLICT.getReasonPhrase(),
+            exception.getMessage(),
+            LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 }
