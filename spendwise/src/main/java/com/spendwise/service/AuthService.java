@@ -1,5 +1,6 @@
 package com.spendwise.service;
 
+
 import com.spendwise.dto.LoginRequest;
 import com.spendwise.dto.LoginResponse;
 import com.spendwise.dto.RegisterRequest;
@@ -7,12 +8,20 @@ import com.spendwise.dto.RegisterResponse;
 import com.spendwise.exception.customException.InvalidPasswordException;
 import com.spendwise.exception.customException.UserNotFoundException;
 import com.spendwise.exception.customException.UserWithEmailAlreadyExists;
+import com.spendwise.model.Currency;
 import com.spendwise.model.User;
+import com.spendwise.repository.CurrencyRepository;
 import com.spendwise.repository.UserRepository;
 
 public class AuthService {
 
     private final UserRepository userRepository;
+    private CurrencyRepository currRepository;
+
+    public AuthService(UserRepository userRepository, CurrencyRepository currRepository) {
+        this.userRepository = userRepository;
+        this.currRepository = currRepository;
+    }
 
     public AuthService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -34,16 +43,19 @@ public class AuthService {
     }
 
     public RegisterResponse register(RegisterRequest request) {
-        if(userRepository.findByEmail(request.email()).isPresent()){
+        if (userRepository.findByEmail(request.email()).isPresent()) {
             throw new UserWithEmailAlreadyExists();
         }
         User newUser = new User(
-            request.username(),
-            request.email(),
-            request.passwordHash(),
-            request.monthlyIncome());
+                request.username(),
+                request.email(),
+                request.passwordHash(),
+                request.monthlyIncome());
+        Currency defaultCurr = currRepository.findById(1L)
+                .orElseThrow(() -> new RuntimeException("Default currency not found"));
+        newUser.setCurrency(defaultCurr);
         userRepository.save(newUser);
-        return new RegisterResponse(true,"User registered");
+        return new RegisterResponse(true, "User registered");
     }
 
 }

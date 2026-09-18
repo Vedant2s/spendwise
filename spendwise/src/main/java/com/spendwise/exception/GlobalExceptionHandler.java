@@ -8,12 +8,23 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.spendwise.dto.ApiErrorResponse;
+import com.spendwise.exception.customException.CurrencyNotAvailable;
 import com.spendwise.exception.customException.InvalidPasswordException;
 import com.spendwise.exception.customException.UserNotFoundException;
 import com.spendwise.exception.customException.UserWithEmailAlreadyExists;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(CurrencyNotAvailable.class)
+    public ResponseEntity<ApiErrorResponse> handleCurrencyNotFound(CurrencyNotAvailable exception){
+        ApiErrorResponse response=new ApiErrorResponse(
+            HttpStatus.NOT_FOUND.value(),
+            HttpStatus.NOT_FOUND.getReasonPhrase(),
+            exception.getMessage(),
+            LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleUserNotFound(UserNotFoundException exception){
         ApiErrorResponse response=new ApiErrorResponse(

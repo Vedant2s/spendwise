@@ -1,8 +1,11 @@
 package com.spendwise.model;
 
 import jakarta.persistence.*;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 
+@Setter 
 @Entity
 @Table(name = "users")
 public class User {
@@ -24,4 +27,7 @@ public class User {
     private String passwordHash;
     @Column(precision = 12, scale = 2)
     private BigDecimal monthlyIncome;
+    @ManyToOne
+    @JoinColumn(name = "currency_id",nullable = false)
+    private Currency currency;
 }
