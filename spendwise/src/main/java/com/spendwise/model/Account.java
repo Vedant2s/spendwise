@@ -11,7 +11,9 @@ public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountID;
+    @Column(nullable=true)
     private String accountNumber;
+    @Column(nullable = false)
     private String accountType;
     @Column(precision = 12, scale = 2)
     private BigDecimal curentBalance;

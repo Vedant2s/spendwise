@@ -1,0 +1,23 @@
+package com.spendwise.controller;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import com.spendwise.dto.CreateAccountRequest;
+import com.spendwise.dto.CreateAccountResponse;
+import com.spendwise.service.AccountService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
+@RestController
+public class AccountController {
+    @Autowired
+    AccountService accountService;
+    @PostMapping("/accounts")
+    public CreateAccountResponse createAccount(@RequestBody CreateAccountRequest request) {
+        return accountService.create(request);
+    }
+
+}
