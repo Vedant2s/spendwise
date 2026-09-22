@@ -1,6 +1,8 @@
 package com.spendwise.service;
 
 
+import org.springframework.stereotype.Service;
+
 import com.spendwise.dto.LoginRequest;
 import com.spendwise.dto.LoginResponse;
 import com.spendwise.dto.RegisterRequest;
@@ -13,18 +15,15 @@ import com.spendwise.model.User;
 import com.spendwise.repository.CurrencyRepository;
 import com.spendwise.repository.UserRepository;
 
+@Service
 public class AuthService {
 
     private final UserRepository userRepository;
-    private CurrencyRepository currRepository;
+    private final CurrencyRepository currRepository;
 
     public AuthService(UserRepository userRepository, CurrencyRepository currRepository) {
         this.userRepository = userRepository;
         this.currRepository = currRepository;
-    }
-
-    public AuthService(UserRepository userRepository) {
-        this.userRepository = userRepository;
     }
 
     public boolean isVerified(User user) {

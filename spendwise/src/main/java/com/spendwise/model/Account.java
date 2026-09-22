@@ -5,19 +5,21 @@ import java.math.BigDecimal;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="accounts")
+@Table(name = "accounts")
 public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long accountID;
-    @Column(nullable=true)
+    @Column(nullable = true)
     private String accountNumber;
     @Column(nullable = false)
     private String accountType;
+    @Column(nullable = false)
+    private String name;
     @Column(precision = 12, scale = 2)
     private BigDecimal curentBalance;
     @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

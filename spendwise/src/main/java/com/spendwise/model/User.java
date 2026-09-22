@@ -4,11 +4,16 @@ import jakarta.persistence.*;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.List;
 
-@Setter 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+@Setter
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     public User(String username, String email, String passwordHash, BigDecimal monthlyIncome) {
 		this.username=username;
@@ -30,4 +35,36 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "currency_id",nullable = false)
     private Currency currency;
+    //The method “getAuthorities()” returns the user’s roles list; it is helpful to manage permissions. We return an empty list because we will not cover role-based access control.
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+    public String getPassword() {
+        return passwordHash;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 }

@@ -45,7 +45,7 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
-    @ExceptionHandler(InvalidPasswordException.class)
+    @ExceptionHandler(UserWithEmailAlreadyExists.class)
     public ResponseEntity<ApiErrorResponse> handleAlreadyExistingEmailRegister(UserWithEmailAlreadyExists exception){
         ApiErrorResponse response=new ApiErrorResponse(
             HttpStatus.CONFLICT.value(),

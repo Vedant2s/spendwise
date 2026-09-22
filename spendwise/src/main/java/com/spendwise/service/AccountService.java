@@ -13,6 +13,6 @@ public class AccountService {
     @Autowired
     AccountRepository accountRepo;
     public CreateAccountResponse create(CreateAccountRequest request){
-        return new CreateAccountResponse(); //add logic
+        return new CreateAccountResponse("created"); //add logic
     }
 }
