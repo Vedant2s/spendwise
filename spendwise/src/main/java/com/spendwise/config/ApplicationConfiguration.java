@@ -1,5 +1,8 @@
 package com.spendwise.config;
 
+import java.math.BigDecimal;
+
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,16 +13,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.spendwise.model.Currency;
+import com.spendwise.repository.CurrencyRepository;
 import com.spendwise.repository.UserRepository;
 
-// import com.spendwise.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+
 @Configuration
+@RequiredArgsConstructor
 public class ApplicationConfiguration {
     private final UserRepository userRepository;
-
-    public ApplicationConfiguration(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Bean
     UserDetailsService userDetailsService() {
@@ -38,11 +41,34 @@ public class ApplicationConfiguration {
     }
 
     @Bean
-    AuthenticationProvider authenticationProvider() {
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService());
 
         authProvider.setPasswordEncoder(passwordEncoder());
 
         return authProvider;
     }
+    @Bean
+    public CommandLineRunner loadCurrencies(CurrencyRepository repo) {
+    return args -> {
+        if (repo.count() == 0) {
+
+            repo.save(
+                Currency.builder()
+                    .currencyCode("INR")
+                    .symbol('₹')
+                    .exchangeRate(BigDecimal.ONE)
+                    .build()
+            );
+
+            repo.save(
+                Currency.builder()
+                    .currencyCode("USD")
+                    .symbol('$')
+                    .exchangeRate(BigDecimal.valueOf(83))
+                    .build()
+            );
+        }
+    };
+}
 }

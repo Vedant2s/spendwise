@@ -1,6 +1,7 @@
 package com.spendwise.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -10,17 +11,20 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.spendwise.config.Role;
+
 @Setter
 @Entity
 @Table(name = "users")
+@Builder
 public class User implements UserDetails {
 
-    public User(String username, String email, String passwordHash, BigDecimal monthlyIncome) {
-		this.username=username;
-        this.email=email;
-        this.passwordHash=passwordHash;
-        this.monthlyIncome=monthlyIncome;
-	}
+    // public User(String username, String email, String passwordHash, BigDecimal monthlyIncome) {
+	// 	this.username=username;
+    //     this.email=email;
+    //     this.passwordHash=passwordHash;
+    //     this.monthlyIncome=monthlyIncome;
+	// }
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userID;
@@ -35,6 +39,8 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "currency_id",nullable = false)
     private Currency currency;
+    @Enumerated(EnumType.STRING)
+    private Role role;
     //The method “getAuthorities()” returns the user’s roles list; it is helpful to manage permissions. We return an empty list because we will not cover role-based access control.
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
