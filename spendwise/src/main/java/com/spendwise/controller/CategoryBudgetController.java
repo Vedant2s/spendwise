@@ -5,10 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spendwise.dto.CategoryBudgetCreationRequest;
 import com.spendwise.dto.CategoryBudgetCreationResponse;
-import com.spendwise.dto.GoalCreationRequest;
-import com.spendwise.dto.GoalCreationResponse;
 import com.spendwise.service.CategoryBudgetService;
-import com.spendwise.service.GoalService;
 
 import lombok.RequiredArgsConstructor;
 
