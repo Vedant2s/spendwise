@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.spendwise.dto.BalanceInAccountsResponse;
 import com.spendwise.dto.BalanceInCurrencyResponse;
 import com.spendwise.exception.customException.UserNotFoundException;
 import com.spendwise.model.Account;
@@ -25,10 +26,14 @@ public class DashboardService {
     private final AccountRepository accountRepository;
     private final UserRepository userRepository;
 
-    public List<BalanceInCurrencyResponse> getBalanceInCurrencies(String email) {
+    private List<Account> getAccountsOfUser(String email) {
         var user = userRepository.findByEmail(email)
                 .orElseThrow(UserNotFoundException::new);
-        List<Account> accounts = accountRepository.findByUser(user);
+        return accountRepository.findByUser(user);
+    }
+
+    public List<BalanceInCurrencyResponse> getBalanceInCurrencies(String email) {
+        List<Account> accounts = getAccountsOfUser(email);
         Map<Currency, BigDecimal> currencyTotals = new HashMap<>();
         for (Account account : accounts) {
             Currency currency = account.getCurrency();
@@ -50,4 +55,19 @@ public class DashboardService {
         return response;
     }
 
+    public List<BalanceInAccountsResponse> getBalanceInAccounts(String email) {
+        List<Account> accounts = getAccountsOfUser(email);
+        List<BalanceInAccountsResponse> response = new ArrayList<>();
+        for (Account account : accounts) {
+            Currency currency = account.getCurrency();
+            response.add(
+                    new BalanceInAccountsResponse(
+                            currency.getCurrencyCode(),
+                            currency.getSymbol(),
+                            account.getAccountId(),
+                            account.getName(),
+                            account.getCurrentBalance()));
+        }
+        return response;
+    }
 }
