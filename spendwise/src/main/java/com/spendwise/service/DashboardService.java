@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import com.spendwise.dto.BalanceInAccountsResponse;
 import com.spendwise.dto.BalanceInCurrencyResponse;
 import com.spendwise.dto.CashFlowResponse;
+import com.spendwise.dto.CategorywiseSpending;
+import com.spendwise.dto.SpendingStructureResponse;
 import com.spendwise.exception.customException.UserNotFoundException;
 import com.spendwise.model.Account;
 import com.spendwise.model.Currency;
@@ -83,7 +85,7 @@ public class DashboardService {
         LocalDate startDate = endDate.minusDays(days);
         List<Account> accounts = getAccountsOfUser(email);
         List<Transaction> transactions = transactionRepository
-                .findAllByAccountsInAndCreatedAtBetween(accounts, startDate, endDate);
+                .findAllByAccountInAndTimeStampBetween(accounts, startDate, endDate);
         BigDecimal income = BigDecimal.ZERO;
         BigDecimal expense = BigDecimal.ZERO;
         for (Transaction transac : transactions) {
@@ -96,7 +98,7 @@ public class DashboardService {
         BigDecimal pastIncome = BigDecimal.ZERO;
         BigDecimal pastExpense = BigDecimal.ZERO;
         transactions = transactionRepository
-                .findAllByAccountsInAndCreatedAtBetween(accounts, startDate.minusDays(days), startDate);
+                .findAllByAccountInAndTimeStampBetween(accounts, startDate.minusDays(days), startDate);
         for (Transaction transac : transactions) {
             if (transac.getTransactionType() == TransactionType.EXPENSE)
                 pastExpense = pastExpense.add(transac.getAmount());
@@ -130,6 +132,72 @@ public class DashboardService {
                 .cashFlow(cashFlow)
                 .cashFlowChangePercentage(cashFlowChangePercentage)
                 .incomeChangePercentage(incomeChangePercentage)
+                .build();
+    }
+
+    public SpendingStructureResponse getSpendingStructure(String email, int days) {
+        LocalDate endDate = LocalDate.now();
+        LocalDate startDate = endDate.minusDays(days);
+        List<Account> accounts = getAccountsOfUser(email);
+        List<Transaction> transactions = transactionRepository.findAllByAccountInAndTimeStampBetween(
+                accounts,
+                startDate,
+                endDate);
+        BigDecimal totalExpense = BigDecimal.ZERO;
+        Map<String, BigDecimal> categoryTotals = new HashMap<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getTransactionType() == TransactionType.EXPENSE) {
+                BigDecimal amount = transaction.getAmount();
+                String categoryName = transaction.getCategory().getCategoryName();
+                totalExpense = totalExpense.add(amount);
+                categoryTotals.put(
+                        categoryName,
+                        categoryTotals
+                                .getOrDefault(categoryName, BigDecimal.ZERO)
+                                .add(amount));
+            }
+        }
+        List<CategorywiseSpending> categories = new ArrayList<>();
+        for (Map.Entry<String, BigDecimal> entry : categoryTotals.entrySet()) {
+            double percentage = 0.0;
+            if (totalExpense.compareTo(BigDecimal.ZERO) != 0) {
+                percentage = entry.getValue()
+                        .divide(totalExpense, 4, RoundingMode.HALF_UP)
+                        .multiply(BigDecimal.valueOf(100))
+                        .setScale(2, RoundingMode.HALF_UP)
+                        .doubleValue();
+            }
+            categories.add(
+                    CategorywiseSpending.builder()
+                            .categoryName(entry.getKey())
+                            .amount(entry.getValue())
+                            .percentage(percentage)
+                            .build());
+        }
+        LocalDate previousStartDate = startDate.minusDays(days);
+        List<Transaction> previousTransactions = transactionRepository.findAllByAccountInAndTimeStampBetween(
+                accounts,
+                previousStartDate,
+                startDate);
+        BigDecimal pastExpense = BigDecimal.ZERO;
+        for (Transaction transaction : previousTransactions) {
+            if (transaction.getTransactionType() == TransactionType.EXPENSE) {
+                pastExpense = pastExpense.add(transaction.getAmount());
+            }
+        }
+        Double expenseChangePercentage = null;
+        if (pastExpense.compareTo(BigDecimal.ZERO) != 0) {
+            BigDecimal expenseDifference = totalExpense.subtract(pastExpense);
+            expenseChangePercentage = expenseDifference
+                    .divide(pastExpense, 4, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100))
+                    .setScale(2, RoundingMode.HALF_UP)
+                    .doubleValue();
+        }
+        return SpendingStructureResponse.builder()
+                .totalSpending(totalExpense)
+                .categories(categories)
+                .changeFromPreviousPeriodPercentage(expenseChangePercentage)
                 .build();
     }
 }

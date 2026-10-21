@@ -10,8 +10,8 @@ import com.spendwise.model.Transaction;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
     // List<Transaction> findAllByAccounts(List<Account> acc);
-    List<Transaction> findAllByAccountsInAndCreatedAtBetween(
-            List<Account> accounts,
+    List<Transaction> findAllByAccountInAndTimeStampBetween(
+            List<Account> account,
             LocalDate startDate,
             LocalDate endDate);
 }

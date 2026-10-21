@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spendwise.dto.BalanceInAccountsResponse;
 import com.spendwise.dto.BalanceInCurrencyResponse;
 import com.spendwise.dto.CashFlowResponse;
+import com.spendwise.dto.SpendingStructureResponse;
 import com.spendwise.service.DashboardService;
 
 import lombok.RequiredArgsConstructor;
@@ -36,4 +37,9 @@ public class DashboardController {
     public ResponseEntity<CashFlowResponse> getCashFlow(Authentication authentication,@PathVariable int days) {
         return ResponseEntity.ok(dashboardService.getCashFlow(authentication.getName(),days));
     }
+    @GetMapping("/spending/structure?period={days}")
+    public ResponseEntity<SpendingStructureResponse> getSpendingStructure(Authentication authentication,@PathVariable int days) {
+        return ResponseEntity.ok(dashboardService.getSpendingStructure(authentication.getName(),days));
+    }
+
 }
