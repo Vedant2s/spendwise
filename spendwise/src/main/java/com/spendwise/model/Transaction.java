@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -15,7 +16,7 @@ public class Transaction {
     private Long transactionID;
     @Enumerated(EnumType.STRING)
     private TransactionType transactionType;
-    private LocalDateTime timeStamp;
+    private LocalDate timeStamp;
     @Column(precision = 12, scale = 2)
     private BigDecimal amount;
     @ManyToOne

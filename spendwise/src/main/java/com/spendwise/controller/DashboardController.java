@@ -4,6 +4,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spendwise.dto.BalanceInAccountsResponse;
 import com.spendwise.dto.BalanceInCurrencyResponse;
+import com.spendwise.dto.BalanceOfUserResponse;
+import com.spendwise.dto.BalanceTrendResponse;
 import com.spendwise.dto.CashFlowResponse;
 import com.spendwise.dto.SpendingStructureResponse;
 import com.spendwise.service.DashboardService;
@@ -41,5 +43,12 @@ public class DashboardController {
     public ResponseEntity<SpendingStructureResponse> getSpendingStructure(Authentication authentication,@PathVariable int days) {
         return ResponseEntity.ok(dashboardService.getSpendingStructure(authentication.getName(),days));
     }
-
+    @GetMapping("/balance/trend?period={days}")
+    public ResponseEntity<BalanceTrendResponse> getActualTotalBalanceTrend(Authentication authentication,@PathVariable String period) {
+        return ResponseEntity.ok(dashboardService.getActualTotalBalanceTrend(authentication.getName(),period));
+    }
+    @GetMapping("/balance/actual-balance?period={days}")
+    public ResponseEntity<BalanceOfUserResponse> getActualTotalBalance(Authentication authentication,@PathVariable String period) {
+        return ResponseEntity.ok(dashboardService.getActualTotalBalance(authentication.getName(),period));
+    }
 }
