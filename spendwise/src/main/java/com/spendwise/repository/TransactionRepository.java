@@ -14,4 +14,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             List<Account> account,
             LocalDate startDate,
             LocalDate endDate);
+    List<Transaction> findAllByAccountInAndTimeStampBetweenOrderByTimeStampDesc( List<Account> account,
+            LocalDate startDate,
+            LocalDate endDate);
 }

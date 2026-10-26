@@ -1,16 +1,22 @@
 package com.spendwise.service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.spendwise.dto.AccountDetailsResponse;
 import com.spendwise.dto.CreateAccountRequest;
 import com.spendwise.dto.CreateAccountResponse;
+import com.spendwise.dto.TransactionResponse;
 import com.spendwise.dto.Type;
 import com.spendwise.model.Account;
+import com.spendwise.model.Transaction;
 import com.spendwise.repository.AccountRepository;
+import com.spendwise.repository.TransactionRepository;
 import com.spendwise.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -20,6 +26,7 @@ import lombok.RequiredArgsConstructor;
 public class AccountService {
         private final AccountRepository accountRepo;
         private final UserRepository userRepository;
+        private final TransactionRepository transactionRepository;
 
         public CreateAccountResponse create(CreateAccountRequest request, String email) {
                 var user = userRepository.findByEmail(email)
@@ -64,5 +71,35 @@ public class AccountService {
                                                 .type(account.getAccountType())
                                                 .build())
                                 .toList();
+        }
+
+        public List<TransactionResponse> getRecordsInPeriod(String email, String period) {
+                var user = userRepository.findByEmail(email)
+                                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                var accounts = accountRepo.findByUser(user);
+                int days = switch (period.toUpperCase()) {
+            case "7D" -> 7;
+            case "30D" -> 30;
+            case "12W" -> 84;
+
+            default -> throw new IllegalArgumentException(
+                    "Invalid period. Allowed values: 7D, 30D, 12W");
+        };
+                LocalDate endDate=LocalDate.now();
+                LocalDate startDate=endDate.minusDays(days - 1L);
+                var transactions=transactionRepository.findAllByAccountInAndTimeStampBetweenOrderByTimeStampDesc(accounts, startDate, endDate);
+                List<TransactionResponse> transRespList=new ArrayList<>();
+                for(Transaction trans:transactions){
+                        transRespList.add(
+                                TransactionResponse.builder()
+                                .amount(trans.getAmount())
+                                .category(trans.getCategory().getCategoryName())
+                                .date(trans.getTimeStamp())
+                                .currCode(trans.getAccount().getCurrency().getCurrencyCode())
+                                .type(trans.getTransactionType())
+                                .build()
+                        );
+                }
+                return transRespList;
         }
 }

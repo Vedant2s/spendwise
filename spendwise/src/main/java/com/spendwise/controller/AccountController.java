@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spendwise.dto.AccountDetailsResponse;
 import com.spendwise.dto.CreateAccountRequest;
 import com.spendwise.dto.CreateAccountResponse;
+import com.spendwise.dto.TransactionResponse;
 import com.spendwise.service.AccountService;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -39,6 +41,13 @@ public class AccountController {
         return ResponseEntity.ok(
                 accountService.getAll(
                         authentication.getName()));
+    }
+    @GetMapping("/last-records?period={days}")
+    public ResponseEntity<List<TransactionResponse>> getRecordsInPeriod(
+            Authentication authentication,@PathVariable String days) {
+        return ResponseEntity.ok(
+                accountService.getRecordsInPeriod(
+                        authentication.getName(),days));
     }
 
 }
