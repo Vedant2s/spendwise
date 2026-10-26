@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spendwise.dto.AccountDetailsResponse;
 import com.spendwise.dto.CreateAccountRequest;
 import com.spendwise.dto.CreateAccountResponse;
+import com.spendwise.dto.ExpenseInPeriodResponse;
 import com.spendwise.dto.TransactionResponse;
 import com.spendwise.service.AccountService;
 
@@ -49,5 +50,11 @@ public class AccountController {
                 accountService.getRecordsInPeriod(
                         authentication.getName(),days));
     }
-
+    @GetMapping("/{accountId}/expense-structure")
+    public ResponseEntity<List<ExpenseInPeriodResponse>> getExpenseRecordsInPeriod(
+            Authentication authentication,@RequestBody  String days,@PathVariable Long accountId) {
+        return ResponseEntity.ok(
+                accountService.getExpenseRecordsInPeriod(
+                        authentication.getName(),days,accountId));
+    }
 }
