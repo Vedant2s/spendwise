@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 import lombok.Builder;
 
-@Builder 
+@Builder
 public record CreateAccountRequest(String name, Type type,
         String accountNumber, BigDecimal initialBalance) {
 

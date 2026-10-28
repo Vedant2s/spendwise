@@ -2,11 +2,13 @@ package com.spendwise.model;
 
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 @Entity
 @Table(name="categories")
-@Getter 
+@Builder 
+@Getter
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

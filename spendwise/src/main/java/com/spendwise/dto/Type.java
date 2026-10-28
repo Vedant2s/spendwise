@@ -3,5 +3,6 @@ package com.spendwise.dto;
 public enum Type{
     CASH,
     DEBIT,
-    CREDIT
+    CREDIT,
+    BANK
 }
