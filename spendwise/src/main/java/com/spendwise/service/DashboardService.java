@@ -3,13 +3,11 @@ package com.spendwise.service;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 
 import com.spendwise.dto.BalanceInAccountsResponse;
@@ -26,7 +24,7 @@ import com.spendwise.model.Currency;
 import com.spendwise.model.Transaction;
 import com.spendwise.model.TransactionType;
 import com.spendwise.repository.AccountRepository;
-import com.spendwise.repository.CurrencyRepository;
+// import com.spendwise.repository.CurrencyRepository;
 import com.spendwise.repository.TransactionRepository;
 import com.spendwise.repository.UserRepository;
 
@@ -35,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DashboardService {
-    private final CurrencyRepository currencyRepository;
+//     private final CurrencyRepository currencyRepository;
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
