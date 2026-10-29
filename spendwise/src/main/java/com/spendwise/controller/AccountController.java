@@ -44,6 +44,7 @@ public class AccountController {
                 accountService.getAll(
                         authentication.getName()));
     }
+    //sample
     @GetMapping("/last-records")
     public ResponseEntity<List<TransactionResponse>> getRecordsInPeriod(
             Authentication authentication,@RequestParam("period")  String days) {
