@@ -20,8 +20,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.spendwise.config.Role;
 import com.spendwise.dto.CategoryBudgetCreationRequest;
 import com.spendwise.dto.CategoryBudgetCreationResponse;
-import com.spendwise.dto.CreateAccountRequest;
-import com.spendwise.dto.CreateAccountResponse;
 import com.spendwise.dto.Type;
 import com.spendwise.exception.customException.AccountNotFoundException;
 import com.spendwise.exception.customException.CategoryNotFoundException;

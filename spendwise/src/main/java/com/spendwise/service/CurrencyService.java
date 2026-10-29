@@ -7,13 +7,12 @@ import org.springframework.stereotype.Service;
 import com.spendwise.dto.CurrencyOptionResponse;
 import com.spendwise.repository.CurrencyRepository;
 
-@Service
-public class CurrencyService {
-    final CurrencyRepository currencyRepos;
+import lombok.RequiredArgsConstructor;
 
-    public CurrencyService(CurrencyRepository currencyRepos) {
-        this.currencyRepos = currencyRepos;
-    }
+@Service
+@RequiredArgsConstructor
+public class CurrencyService {
+    private final CurrencyRepository currencyRepos;
 
     public List<CurrencyOptionResponse> getAll(){
         return currencyRepos.findAll()

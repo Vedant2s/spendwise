@@ -338,7 +338,7 @@ public class DashboardService {
         /*
          * Step 8: Calculate percentage change.
          */
-        Double balanceChangePercentage;
+        Double balanceChangePercentage=null;
 
         if (pastBalance.compareTo(BigDecimal.ZERO) == 0) {
 

@@ -1,6 +1,7 @@
 package com.spendwise.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name="transactions")
 @Getter
+@Builder 
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

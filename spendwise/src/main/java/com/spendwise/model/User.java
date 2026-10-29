@@ -2,6 +2,7 @@ package com.spendwise.model;
 
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import com.spendwise.config.Role;
 @Setter
 @Entity
 @Table(name = "users")
+@Getter 
 @Builder
 public class User implements UserDetails {
 
