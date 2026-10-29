@@ -1,6 +1,7 @@
 package com.spendwise.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spendwise.dto.AccountDetailsResponse;
@@ -43,16 +44,16 @@ public class AccountController {
                 accountService.getAll(
                         authentication.getName()));
     }
-    @GetMapping("/last-records?period={days}")
+    @GetMapping("/last-records")
     public ResponseEntity<List<TransactionResponse>> getRecordsInPeriod(
-            Authentication authentication,@PathVariable String days) {
+            Authentication authentication,@RequestParam("period")  String days) {
         return ResponseEntity.ok(
                 accountService.getRecordsInPeriod(
                         authentication.getName(),days));
     }
     @GetMapping("/{accountId}/expense-structure")
     public ResponseEntity<List<ExpenseInPeriodResponse>> getExpenseRecordsInPeriod(
-            Authentication authentication,@RequestBody  String days,@PathVariable Long accountId) {
+            Authentication authentication,@RequestParam("period")  String days,@PathVariable Long accountId) {
         return ResponseEntity.ok(
                 accountService.getExpenseRecordsInPeriod(
                         authentication.getName(),days,accountId));
