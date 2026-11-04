@@ -33,30 +33,34 @@ jobs:
   deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
-
-    # Deployment only happens if test job passes
+  
     needs: test
-
+  
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
-
+  
       - name: Login to Azure
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+  
       - name: Build and deploy to Azure Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
           appSourcePath: ${{ github.workspace }}/spendwise
           dockerfilePath: Dockerfile
-
+  
           acrName: ${{ vars.ACR_NAME }}
-
+  
           containerAppName: ${{ vars.CONTAINER_APP_NAME }}
-
+  
           resourceGroup: ${{ vars.AZURE_RESOURCE_GROUP }}
-
+  
           imageToBuild: ${{ vars.ACR_NAME }}.azurecr.io/spendwise:${{ github.sha }}
+  
+          environmentVariables: |
+            SUPABASE_DB_URL=${{ secrets.SUPABASE_DB_URL }}
+            SUPABASE_DB_USERNAME=${{ secrets.SUPABASE_DB_USERNAME }}
+            SUPABASE_DB_PASSWORD=${{ secrets.SUPABASE_DB_PASSWORD }}
+            JWT_SECRET=${{ secrets.JWT_SECRET }}
