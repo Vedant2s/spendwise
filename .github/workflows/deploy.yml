@@ -64,8 +64,8 @@ jobs:
 
           imageToBuild: ${{ vars.ACR_NAME }}.azurecr.io/spendwise:${{ github.sha }}
 
-          registryUsername: ${{ secrets.ACR_USERNAME }}
-          registryPassword: ${{ secrets.ACR_PASSWORD }}
+          acrUsername: ${{ secrets.ACR_USERNAME }}
+          acrPassword: ${{ secrets.ACR_PASSWORD }}
 
           environmentVariables: |
             SUPABASE_DB_URL=${{ secrets.SUPABASE_DB_URL }}
