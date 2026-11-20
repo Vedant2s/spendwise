@@ -134,12 +134,14 @@ class AuthServiceTest {
 
         // Arrange
         String email = "vedant@gmail.com";
+        String rawPassword = "password123";
+        String encodedPassword = "encoded-password123";
         String token = "generated-jwt-token";
 
         RegisterRequest request = RegisterRequest.builder()
                 .username("Vedant")
                 .email(email)
-                .passwordHash("password123")
+                .passwordHash(rawPassword)
                 .monthlyIncome(new BigDecimal("50000"))
                 .build();
 
@@ -151,6 +153,9 @@ class AuthServiceTest {
 
         when(userRepository.findByEmail(email))
                 .thenReturn(Optional.empty());
+
+        when(passwordEncoder.encode(rawPassword))
+                .thenReturn(encodedPassword);
 
         when(currRepository.findById(1L))
                 .thenReturn(Optional.of(defaultCurrency));
@@ -175,7 +180,7 @@ class AuthServiceTest {
 
         assertEquals("vedant@gmail.com", savedUser.getUsername());
         assertEquals(email, savedUser.getEmail());
-        assertEquals("password123", savedUser.getPasswordHash());
+        assertEquals(encodedPassword, savedUser.getPasswordHash());
         assertEquals(
                 new BigDecimal("50000"),
                 savedUser.getMonthlyIncome()
@@ -184,10 +189,11 @@ class AuthServiceTest {
         assertEquals(Role.USER, savedUser.getRole());
 
         verify(userRepository).findByEmail(email);
+        verify(passwordEncoder).encode(rawPassword);
         verify(currRepository).findById(1L);
         verify(jwtService).generateToken(anyMap(), any(User.class));
     }
-
+    
     @Test
     void register_shouldThrowUserWithEmailAlreadyExists_whenEmailExists() {
 
