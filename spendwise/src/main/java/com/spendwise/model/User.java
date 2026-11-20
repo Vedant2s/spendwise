@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -19,6 +21,8 @@ import com.spendwise.config.Role;
 @Table(name = "users")
 @Getter 
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 
     // public User(String username, String email, String passwordHash, BigDecimal monthlyIncome) {
