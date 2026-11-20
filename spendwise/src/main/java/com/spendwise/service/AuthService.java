@@ -58,7 +58,7 @@ public class AuthService {
         var newUser = User.builder()
                 .username(request.username())
                 .email(request.email())
-                .passwordHash(request.passwordHash())
+                .passwordHash(passwordEncoder.encode(request.passwordHash()))
                 .monthlyIncome(request.monthlyIncome())
                 .currency(currRepository.findById(1L)
                         .orElseThrow(() -> new RuntimeException("Default currency not found")))
