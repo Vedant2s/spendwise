@@ -1,5 +1,7 @@
 package com.spendwise.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.spendwise.dto.GoalCreationRequest;
@@ -16,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class GoalService {
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
+
     public GoalCreationResponse create(GoalCreationRequest request, String email) {
         var user=userRepository.findByEmail(email).orElseThrow(()->new UserNotFoundException());
         var newGoal = Goal.builder()
@@ -33,6 +36,20 @@ public class GoalService {
                 .name(savedGoal.getName())
                 .targetAmount(savedGoal.getTargetAmount())
                 .build();
+    }
+
+    public List<GoalCreationResponse> getAll(String email) {
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UserNotFoundException());
+        return goalRepository.findByUser(user).stream()
+                .map(goal -> GoalCreationResponse.builder()
+                        .goalId(goal.getGoalId())
+                        .currentAmount(goal.getCurrentAmount())
+                        .desiredDate(goal.getDesiredDate())
+                        .name(goal.getName())
+                        .targetAmount(goal.getTargetAmount())
+                        .build())
+                .toList();
     }
 
 }

@@ -1,5 +1,8 @@
 package com.spendwise.controller;
 
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +27,11 @@ public class GoalController {
     @PostMapping
     public ResponseEntity<GoalCreationResponse> createGoal(@RequestBody GoalCreationRequest request,Authentication authentication) {
         return ResponseEntity.status(HttpStatus.CREATED).body(goalService.create(request,authentication.getName()));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<GoalCreationResponse>> getAllGoals(Authentication authentication) {
+        return ResponseEntity.ok(goalService.getAll(authentication.getName()));
     }
 
 }
